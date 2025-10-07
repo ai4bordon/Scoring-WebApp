@@ -1,0 +1,12 @@
+.venv/
+.claude/
+__pycache__/
+.env
+# Streamlit secrets - исключить API ключи из репозитория
+.streamlit/secrets.toml
+
+# Временные файлы и логи
+*.log
+temp/
+tmp/
+*.bat
