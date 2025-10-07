@@ -46,11 +46,22 @@ cv = st.text_area('Введите ссылку на резюме')
 if st.button("Проанализировать соответствие"):
     with st.spinner("Парсим данные и отправляем в GPT..."):
         try:
-            job_html = get_html(job_description).text
-            resume_html = get_html(cv).text
+            job_response = get_html(job_description)
+            resume_response = get_html(cv)
 
-            job_text = extract_vacancy_data(job_html)
-            resume_text = extract_resume_data(resume_html)
+            # Проверяем, что получили Response объекты, а не строки
+            if hasattr(job_response, 'text'):
+                job_html = job_response.text
+            else:
+                job_html = str(job_response)
+
+            if hasattr(resume_response, 'text'):
+                resume_html = resume_response.text
+            else:
+                resume_html = str(resume_response)
+
+            job_text = extract_vacancy_data(job_response)
+            resume_text = extract_resume_data(resume_response)
 
             prompt = f"# ВАКАНСИЯ\n{job_text}\n\n# РЕЗЮМЕ\n{resume_text}"
             response = request_gpt(SYSTEM_PROMPT, prompt)
